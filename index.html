@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>NexaWeb | Premium Digital Agency</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563eb;
+        }
+
+        /* Custom Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 5px rgba(59,130,246,0.3); }
+            50% { box-shadow: 0 0 20px rgba(59,130,246,0.6); }
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { border-color: rgba(59,130,246,0.3); }
+            50% { border-color: rgba(59,130,246,0.8); }
+        }
+
+        .animate-fadeUp {
+            animation: fadeUp 0.8s ease forwards;
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .animate-scaleIn {
+            animation: scaleIn 0.5s ease forwards;
+        }
+
+        .animate-slideLeft {
+            animation: slideInLeft 0.7s ease forwards;
+        }
+
+        .animate-slideRight {
+            animation: slideInRight 0.7s ease forwards;
+        }
+
+        /* Scroll Reveal Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.6s ease;
+        }
+
+        .reveal-scale.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Loading Spinner */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        .loader.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #1a1a1a;
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(59,130,246,0.3);
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        /* Service Card */
+        .service-card {
+            background: #111111;
+            border: 1px solid #222222;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: #3b82f6;
+            box-shadow: 0 20px 30px -12px rgba(59,130,246,0.2);
+        }
+        .service-icon {
+            transition: all 0.3s ease;
+        }
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
+            background: #3b82f6;
+        }
+        .service-card:hover .service-icon i {
+            color: white;
+        }
+
+        /* Portfolio Card */
+        .portfolio-card {
+            transition: all 0.4s ease;
+        }
+        .portfolio-card:hover {
+            transform: translateY(-8px);
+        }
+        .portfolio-img {
+            transition: transform 0.6s ease;
+        }
+        .portfolio-card:hover .portfolio-img {
+            transform: scale(1.1);
+        }
+        .portfolio-overlay {
+            transition: opacity 0.4s ease;
+        }
+
+        /* Testimonial Card */
+        .testimonial-card {
+            background: #111111;
+            border: 1px solid #222222;
+            transition: all 0.4s ease;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-8px);
+            border-color: #3b82f6;
+            box-shadow: 0 20px 30px -12px rgba(59,130,246,0.15);
+        }
+
+        /* Form Inputs */
+        .form-input {
+            background: #111111;
+            border: 1px solid #222222;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+            outline: none;
+        }
+
+        /* Button Hover */
+        .btn-primary {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(59,130,246,0.4);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Nav Link Active */
+        .nav-link.active {
+            color: #3b82f6;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 4px;
+        }
+
+        /* Smooth Scroll Offset */
+        html {
+            scroll-padding-top: 80px;
+        }
+
+        /* Glowing Text Effect */
+        .glow-text {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Stats Counter */
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader" class="loader">
+    <div class="spinner"></div>
+</div>
+
+<!-- Navigation -->
+<nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-black/95 backdrop-blur-md border-b border-gray-800 py-3">
+    <div class="container mx-auto px-6 lg:px-12 flex justify-between items-center">
+        <a href="#" class="text-2xl font-bold tracking-tight">
+            <span class="text-blue-500">Nexa</span><span class="text-white">Web</span>
+        </a>
+        
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex space-x-8">
+            <a href="#home" class="nav-link capitalize text-sm font-medium text-gray-300 hover:text-blue-400 transition">Home</a>
+            <a href="#about" class="nav-link capitalize text-sm font-medium text-gray-300 hover:text-blue-400 transition">About</a>
+            <a href="#services" class="nav-link capitalize text-sm font-medium text-gray-300 hover:text-blue-400 transition">Services</a>
+            <a href="#portfolio" class="nav-link capitalize text-sm font-medium text-gray-300 hover:text-blue-400 transition">Portfolio</a>
+            <a href="#testimonials" class="nav-link capitalize text-sm font-medium text-gray-300 hover:text-blue-400 transition">Testimonials</a>
+            <a href="#contact" class="nav-link capitalize text-sm font-medium text-gray-300 hover:text-blue-400 transition">Contact</a>
+        </div>
+        
+        <!-- Desktop CTA -->
+        <a href="#contact" class="hidden md:inline-block bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-blue-700 transition shadow-lg btn-primary">
+            Get Started
+        </a>
+        
+        <!-- Mobile Menu Button -->
+        <button id="mobileMenuBtn" class="md:hidden text-2xl focus:outline-none text-white">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-black border-b border-gray-800 py-4 px-6 flex flex-col space-y-4">
+        <a href="#home" class="mobile-link capitalize text-sm font-medium py-2 text-gray-300 hover:text-blue-400 transition">Home</a>
+        <a href="#about" class="mobile-link capitalize text-sm font-medium py-2 text-gray-300 hover:text-blue-400 transition">About</a>
+        <a href="#services" class="mobile-link capitalize text-sm font-medium py-2 text-gray-300 hover:text-blue-400 transition">Services</a>
+        <a href="#portfolio" class="mobile-link capitalize text-sm font-medium py-2 text-gray-300 hover:text-blue-400 transition">Portfolio</a>
+        <a href="#testimonials" class="mobile-link capitalize text-sm font-medium py-2 text-gray-300 hover:text-blue-400 transition">Testimonials</a>
+        <a href="#contact" class="mobile-link capitalize text-sm font-medium py-2 text-gray-300 hover:text-blue-400 transition">Contact</a>
+        <a href="#contact" class="bg-blue-600 text-white text-center px-4 py-2 rounded-full text-sm font-medium">Get Started</a>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+    <!-- Animated Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black"></div>
+    <div class="absolute inset-0 opacity-30">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-blue-600 rounded-full blur-[100px] animate-pulse"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-600 rounded-full blur-[120px] animate-pulse" style="animation-delay: 2s;"></div>
+    </div>
+    
+    <div class="container mx-auto px-6 lg:px-12 py-20 relative z-10">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="inline-block px-4 py-1 bg-blue-600/20 text-blue-400 rounded-full text-sm font-medium mb-6 animate-fadeIn">
+                Digital Innovation Agency
+            </span>
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight animate-fadeUp">
+                Transform Your <span class="glow-text">Digital</span> Presence
+            </h1>
+            <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto animate-fadeUp" style="animation-delay: 0.2s">
+                We craft exceptional digital experiences that drive growth, engagement, and measurable results for businesses across the UK.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fadeUp" style="animation-delay: 0.3s">
+                <a href="#contact" class="bg-blue-600 text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-blue-700 transition shadow-lg hover:shadow-xl btn-primary">
+                    Start Your Project
+                </a>
+                <a href="#portfolio" class="border-2 border-gray-700 text-gray-300 px-8 py-3 rounded-full text-base font-semibold hover:border-blue-600 hover:text-blue-400 transition">
+                    View Our Work
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-24 bg-black">
+    <div class="container mx-auto px-6 lg:px-12">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="reveal-left">
+                <span class="text-blue-400 font-semibold text-sm uppercase tracking-wider">About Us</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-white mt-2 mb-6">
+                    We're a team of <span class="glow-text">creative thinkers</span> & digital experts
+                </h2>
+                <p class="text-gray-400 mb-4 leading-relaxed">
+                    Based in London, NexaWeb has been helping businesses across the UK establish powerful online presences since 2018. Our mission is to bridge the gap between creative design and technical excellence.
+                </p>
+                <p class="text-gray-400 mb-6 leading-relaxed">
+                    We believe in building long-term partnerships with our clients, delivering solutions that not only look beautiful but also drive real business results.
+                </p>
+                <div class="flex flex-wrap gap-8">
+                    <div><div class="stat-number counter" data-target="150">0</div><div class="text-gray-500">Projects Delivered</div></div>
+                    <div><div class="stat-number counter" data-target="98">0</div><div class="text-gray-500">Client Satisfaction</div></div>
+                    <div><div class="stat-number counter" data-target="24">0</div><div class="text-gray-500">Support Available</div></div>
+                </div>
+            </div>
+            <div class="relative reveal-right">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=500&fit=crop" alt="Team working" class="rounded-2xl shadow-2xl w-full object-cover h-[400px]"/>
+                <div class="absolute -bottom-5 -right-5 w-32 h-32 bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl flex items-center justify-center shadow-xl animate-pulse">
+                    <i class="fas fa-quote-right text-4xl text-white"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="py-24 bg-gray-900">
+    <div class="container mx-auto px-6 lg:px-12">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-blue-400 font-semibold text-sm uppercase tracking-wider reveal">What We Do</span>
+            <h2 class="text-4xl md:text-5xl font-bold text-white mt-2 mb-4 reveal" data-aos-delay="100">Services We Provide</h2>
+            <p class="text-gray-400 reveal" data-aos-delay="200">Comprehensive digital solutions tailored to your business needs</p>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Service 1 -->
+            <div class="service-card rounded-2xl p-8 reveal-scale" data-aos-delay="0">
+                <div class="service-icon w-14 h-14 bg-blue-600/20 rounded-xl flex items-center justify-center mb-6"><i class="fas fa-globe text-2xl text-blue-400"></i></div>
+                <h3 class="text-xl font-bold text-white mb-3">Web Development</h3>
+                <p class="text-gray-400 leading-relaxed">Custom, responsive websites built with modern frameworks and best practices for optimal performance.</p>
+            </div>
+            <!-- Service 2 -->
+            <div class="service-card rounded-2xl p-8 reveal-scale" data-aos-delay="100">
+                <div class="service-icon w-14 h-14 bg-blue-600/20 rounded-xl flex items-center justify-center mb-6"><i class="fas fa-mobile-alt text-2xl text-blue-400"></i></div>
+                <h3 class="text-xl font-bold text-white mb-3">Mobile Solutions</h3>
+                <p class="text-gray-400 leading-relaxed">Native and cross-platform mobile apps that deliver seamless user experiences across all devices.</p>
+            </div>
+            <!-- Service 3 -->
+            <div class="service-card rounded-2xl p-8 reveal-scale" data-aos-delay="200">
+                <div class="service-icon w-14 h-14 bg-blue-600/20 rounded-xl flex items-center justify-center mb-6"><i class="fas fa-chart-line text-2xl text-blue-400"></i></div>
+                <h3 class="text-xl font-bold text-white mb-3">Digital Marketing</h3>
+                <p class="text-gray-400 leading-relaxed">Data-driven SEO, PPC, and social media strategies to grow your online presence.</p>
+            </div>
+            <!-- Service 4 -->
+            <div class="service-card rounded-2xl p-8 reveal-scale" data-aos-delay="300">
+                <div class="service-icon w-14 h-14 bg-blue-600/20 rounded-xl flex items-center justify-center mb-6"><i class="fas fa-paint-brush text-2xl text-blue-400"></i></div>
+                <h3 class="text-xl font-bold text-white mb-3">UI/UX Design</h3>
+                <p class="text-gray-400 leading-relaxed">Beautiful, intuitive interfaces crafted with user-centered design principles.</p>
+            </div>
+            <!-- Service 5 -->
+            <div class="service-card rounded-2xl p-8 reveal-scale" data-aos-delay="400">
+                <div class="service-icon w-14 h-14 bg-blue-600/20 rounded-xl flex items-center justify-center mb-6"><i class="fas fa-cloud text-2xl text-blue-400"></i></div>
+                <h3 class="text-xl font-bold text-white mb-3">Cloud Solutions</h3>
+                <p class="text-gray-400 leading-relaxed">Scalable cloud infrastructure and DevOps services for modern businesses.</p>
+            </div>
+            <!-- Service 6 -->
+            <div class="service-card rounded-2xl p-8 reveal-scale" data-aos-delay="500">
+                <div class="service-icon w-14 h-14 bg-blue-600/20 rounded-xl flex items-center justify-center mb-6"><i class="fas fa-shield-alt text-2xl text-blue-400"></i></div>
+                <h3 class="text-xl font-bold text-white mb-3">Cyber Security</h3>
+                <p class="text-gray-400 leading-relaxed">Comprehensive security audits and protection for your digital assets.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Section -->
+<section id="portfolio" class="py-24 bg-black">
+    <div class="container mx-auto px-6 lg:px-12">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-blue-400 font-semibold text-sm uppercase tracking-wider reveal">Our Work</span>
+            <h2 class="text-4xl md:text-5xl font-bold text-white mt-2 mb-4 reveal" data-aos-delay="100">Recent Projects</h2>
+            <p class="text-gray-400 reveal" data-aos-delay="200">Explore some of our finest work delivering exceptional results for clients</p>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Portfolio 1 -->
+            <div class="portfolio-card rounded-2xl overflow-hidden shadow-lg reveal-scale" data-aos-delay="0">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=450&fit=crop" alt="FinTech Platform" class="portfolio-img w-full h-full object-cover">
+                    <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 transition-opacity duration-300">
+                        <div class="absolute bottom-0 left-0 right-0 p-6 text-white"><p class="text-sm uppercase tracking-wider text-blue-400">Web App</p><h3 class="text-xl font-bold">FinTech Platform</h3></div>
+                    </div>
+                </div>
+                <div class="p-5 bg-gray-900"><p class="text-sm text-blue-400 uppercase tracking-wider">Web App</p><h3 class="text-lg font-bold text-white mt-1">FinTech Platform</h3></div>
+            </div>
+            <!-- Portfolio 2 -->
+            <div class="portfolio-card rounded-2xl overflow-hidden shadow-lg reveal-scale" data-aos-delay="100">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=600&h=450&fit=crop" alt="Luxury E-commerce" class="portfolio-img w-full h-full object-cover">
+                    <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 transition-opacity duration-300">
+                        <div class="absolute bottom-0 left-0 right-0 p-6 text-white"><p class="text-sm uppercase tracking-wider text-blue-400">E-commerce</p><h3 class="text-xl font-bold">Luxury E-commerce</h3></div>
+                    </div>
+                </div>
+                <div class="p-5 bg-gray-900"><p class="text-sm text-blue-400 uppercase tracking-wider">E-commerce</p><h3 class="text-lg font-bold text-white mt-1">Luxury E-commerce</h3></div>
+            </div>
+            <!-- Portfolio 3 -->
+            <div class="portfolio-card rounded-2xl overflow-hidden shadow-lg reveal-scale" data-aos-delay="200">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=450&fit=crop" alt="Healthcare Dashboard" class="portfolio-img w-full h-full object-cover">
+                    <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 transition-opacity duration-300">
+                        <div class="absolute bottom-0 left-0 right-0 p-6 text-white"><p class="text-sm uppercase tracking-wider text-blue-400">Dashboard</p><h3 class="text-xl font-bold">Healthcare Dashboard</h3></div>
+                    </div>
+                </div>
+                <div class="p-5 bg-gray-900"><p class="text-sm text-blue-400 uppercase tracking-wider">Dashboard</p><h3 class="text-lg font-bold text-white mt-1">Healthcare Dashboard</h3></div>
+            </div>
+            <!-- Portfolio 4 -->
+            <div class="portfolio-card rounded-2xl overflow-hidden shadow-lg reveal-scale" data-aos-delay="300">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&h=450&fit=crop" alt="Travel Booking App" class="portfolio-img w-full h-full object-cover">
+                    <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 transition-opacity duration-300">
+                        <div class="absolute bottom-0 left-0 right-0 p-6 text-white"><p class="text-sm uppercase tracking-wider text-blue-400">Mobile App</p><h3 class="text-xl font-bold">Travel Booking App</h3></div>
+                    </div>
+                </div>
+                <div class="p-5 bg-gray-900"><p class="text-sm text-blue-400 uppercase tracking-wider">Mobile App</p><h3 class="text-lg font-bold text-white mt-1">Travel Booking App</h3></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section id="testimonials" class="py-24 bg-gray-900">
+    <div class="container mx-auto px-6 lg:px-12">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-blue-400 font-semibold text-sm uppercase tracking-wider reveal">Testimonials</span>
+            <h2 class="text-4xl md:text-5xl font-bold text-white mt-2 mb-4 reveal" data-aos-delay="100">What Our Clients Say</h2>
+            <p class="text-gray-400 reveal" data-aos-delay="200">Don't just take our word for it — hear from our satisfied clients</p>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Testimonial 1 -->
+            <div class="testimonial-card rounded-2xl p-8 reveal-scale" data-aos-delay="0">
+                <div class="flex items-center gap-4 mb-6"><img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-14 h-14 rounded-full object-cover border-2 border-blue-500"><div><h4 class="font-bold text-white">Sarah Johnson</h4><p class="text-sm text-gray-400">CEO, TechStart UK</p></div></div>
+                <div class="flex gap-1 mb-4"><i class="fas fa-star text-yellow-500 text-sm"></i><i class="fas fa-star text-yellow-500 text-sm"></i><i class="fas fa-star text-yellow-500 text-sm"></i><i class="fas fa-star text-yellow-500 text-sm"></i><i class="fas fa-star text-yellow-500 text-sm"></i></div>
+                <p class="text-gray-400 italic leading-relaxed">"NexaWeb transformed our digital presence completely. Their team delivered beyond expectations and the results have been outstanding."</p>
+            </div>
+            <!-- Testimonial 2 -->
+            <div class="testimonial-card rounded-2xl p-8 reveal-scale" data-aos-delay="100">
+                <div class="flex items-center gap-4 mb-6"><img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-14 h-14 rounded-full object-cover border-2 border-blue-500"><div><h4 class="font-bold text-white">David Williams</h4><p class="text-sm text-gray-400">Marketing Director, GrowthLabs</p></div></div>
+                <div class="flex gap-1 mb-4"><i class="fas fa-star text-yellow-500 text-sm"></i><i class="fas fa-star text-yellow-500 text-sm"></i><i class="fas fa-star text-yellow-500 text-sm"></i><i class="fas fa-star text-yellow-500 text-sm"></i><i class="fas fa-star text-yellow-500 text-sm"></i></div>
+                <p class="text-gray-400 italic leading-relaxed">"Professional, creative, and results-driven. The new website has increased our conversion rate by 40%. Highly recommended!"</p>
+            </div>
+            <!-- Testimonial 3 -->
+            <div class="testimonial-card rounded-2xl p-8 reveal-scale" data-aos-delay="200">
+                <div class="flex items-center gap-4 mb-6"><img src="https://randomuser.me/api/portraits/women/68.jpg" class="w-14 h-14 rounded-full object-cover border-2 border-blue-500"><div><h4 class="font-bold text-white">Emma Thompson</h4><p class="text-sm text-gray-400">Founder, LuxeStyle</p></div></div>
+                <div class="flex gap-1 mb-4"><i class="fas fa-star text-yellow-500 text-sm"></i><i class="fas fa-star text-yellow-500 text-sm"></i><i class="fas fa-star text-yellow-500 text-sm"></i><i class="fas fa-star text-yellow-500 text-sm"></i><i class="fas fa-star text-yellow-500 text-sm"></i></div>
+                <p class="text-gray-400 italic leading-relaxed">"Working with NexaWeb has been a game-changer. Their attention to detail and customer service is exceptional."</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-24 bg-black">
+    <div class="container mx-auto px-6 lg:px-12">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-blue-400 font-semibold text-sm uppercase tracking-wider reveal">Get In Touch</span>
+            <h2 class="text-4xl md:text-5xl font-bold text-white mt-2 mb-4 reveal" data-aos-delay="100">Start a Conversation</h2>
+            <p class="text-gray-400 reveal" data-aos-delay="200">Ready to transform your digital presence? Let's discuss your project.</p>
+        </div>
+        <div class="max-w-2xl mx-auto">
+            <form id="contactForm" class="space-y-6">
+                <div class="reveal" data-aos-delay="0">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Full Name *</label>
+                    <input type="text" id="name" name="name" class="form-input w-full px-5 py-3 rounded-xl text-white" placeholder="John Smith">
+                    <p id="nameError" class="text-red-500 text-sm mt-1 hidden"></p>
+                </div>
+                <div class="reveal" data-aos-delay="100">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Email Address *</label>
+                    <input type="email" id="email" name="email" class="form-input w-full px-5 py-3 rounded-xl text-white" placeholder="hello@nexaweb.com">
+                    <p id="emailError" class="text-red-500 text-sm mt-1 hidden"></p>
+                </div>
+                <div class="reveal" data-aos-delay="200">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Message *</label>
+                    <textarea id="message" name="message" rows="5" class="form-input w-full px-5 py-3 rounded-xl text-white resize-none" placeholder="Tell us about your project..."></textarea>
+                    <p id="messageError" class="text-red-500 text-sm mt-1 hidden"></p>
+                </div>
+                <button type="submit" id="submitBtn" class="btn-primary w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition">
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </div>
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle mr-2"></i> Message sent successfully!
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-black border-t border-gray-800 py-12">
+    <div class="container mx-auto px-6 lg:px-12">
+        <div class="grid md:grid-cols-4 gap-10">
+            <div><h3 class="text-2xl font-bold text-white mb-4"><span class="text-blue-500">Nexa</span>Web</h3><p class="text-sm text-gray-400 leading-relaxed">Digital innovation agency crafting exceptional digital experiences for businesses across the UK.</p></div>
+            <div><h4 class="text-white font-semibold mb-4">Quick Links</h4><ul class="space-y-2 text-sm"><li><a href="#home" class="text-gray-400 hover:text-blue-400 transition">Home</a></li><li><a href="#about" class="text-gray-400 hover:text-blue-400 transition">About</a></li><li><a href="#services" class="text-gray-400 hover:text-blue-400 transition">Services</a></li><li><a href="#portfolio" class="text-gray-400 hover:text-blue-400 transition">Portfolio</a></li></ul></div>
+            <div><h4 class="text-white font-semibold mb-4">Contact</h4><ul class="space-y-2 text-sm"><li class="text-gray-400"><i class="fas fa-map-marker-alt w-5 text-blue-500"></i> London, United Kingdom</li><li class="text-gray-400"><i class="fas fa-phone w-5 text-blue-500"></i> +44 20 7946 0138</li><li class="text-gray-400"><i class="fas fa-envelope w-5 text-blue-500"></i> hello@nexaweb.co.uk</li></ul></div>
+            <div><h4 class="text-white font-semibold mb-4">Follow Us</h4><div class="flex space-x-4"><a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition"><i class="fab fa-twitter text-gray-400 hover:text-white"></i></a><a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition"><i class="fab fa-linkedin-in text-gray-400 hover:text-white"></i></a><a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition"><i class="fab fa-instagram text-gray-400 hover:text-white"></i></a><a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition"><i class="fab fa-github text-gray-400 hover:text-white"></i></a></div></div>
+        </div>
+        <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500"><p>&copy; 2025 NexaWeb. All rights reserved. Designed in London</p></div>
+    </div>
+</footer>
+
+<script>
+    // Hide loader
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            document.getElementById('loader').classList.add('hide');
+        }, 800);
+    });
+
+    // Scroll reveal using Intersection Observer
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+    
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('bg-black/95', 'backdrop-blur-md');
+        } else {
+            navbar.classList.remove('bg-black/95');
+            navbar.classList.add('bg-black/95');
+        }
+    });
+
+    // Mobile menu toggle
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (mobileBtn) {
+        mobileBtn.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileBtn.querySelector('i');
+            if (mobileMenu.classList.contains('hidden')) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
+        });
+    }
+
+    // Close mobile menu on link click
+    document.querySelectorAll('.mobile-link').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            const icon = mobileBtn.querySelector('i');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        });
+    });
+
+    // Active section highlighting
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (scrollY >= sectionTop - 100) {
+                current = section.getAttribute('id');
+            }
+        });
+        navLinks.forEach(link => {
+            link.classList.remove('active', 'text-blue-400', 'border-b-2', 'border-blue-400');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active', 'text-blue-400', 'border-b-2', 'border-blue-400');
+            }
+        });
+    });
+
+    // Counter animation for stats
+    const counters = document.querySelectorAll('.counter');
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counter = entry.target;
+                const target = parseInt(counter.getAttribute('data-target'));
+                let count = 0;
+                const increment = target / 50;
+                const updateCounter = () => {
+                    count += increment;
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.innerText = target + (target === 98 ? '%' : '+');
+                    }
+                };
+                updateCounter();
+                counterObserver.unobserve(counter);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    counters.forEach(counter => counterObserver.observe(counter));
+
+    // Form validation
+    const contactForm = document.getElementById('contactForm');
+    const toast = document.getElementById('toast');
+    let toastTimeout;
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+            
+            let isValid = true;
+            
+            if (name === '') {
+                document.getElementById('nameError').textContent = 'Name is required';
+                document.getElementById('nameError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('nameError').classList.add('hidden');
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email === '') {
+                document.getElementById('emailError').textContent = 'Email is required';
+                document.getElementById('emailError').classList.remove('hidden');
+                isValid = false;
+            } else if (!emailRegex.test(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email';
+                document.getElementById('emailError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('emailError').classList.add('hidden');
+            }
+            
+            if (message === '') {
+                document.getElementById('messageError').textContent = 'Message is required';
+                document.getElementById('messageError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('messageError').classList.add('hidden');
+            }
+            
+            if (isValid) {
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Sending...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = 'Send Message';
+                    submitBtn.disabled = false;
+                    contactForm.reset();
+                    
+                    toast.classList.add('show');
+                    if (toastTimeout) clearTimeout(toastTimeout);
+                    toastTimeout = setTimeout(() => {
+                        toast.classList.remove('show');
+                    }, 3000);
+                }, 1000);
+            }
+        });
+    }
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            const target = document.querySelector(targetId);
+            if (target) {
+                e.preventDefault();
+                const offset = 80;
+                const targetPosition = target.offsetTop - offset;
+                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    const icon = mobileBtn.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        });
+    });
+
+    // AOS initialization for additional animations
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+    }
+</script>
+</body>
+</html>
